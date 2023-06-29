@@ -51,7 +51,7 @@ julia> vector2operator(v)
 2×2 Matrix{Int64}:
  1  2
  3  4
-``
+```
 """
 vector2operator(v, d=round(Int, sqrt(prod(size(v))))) = reshape(v, d, d)
 
