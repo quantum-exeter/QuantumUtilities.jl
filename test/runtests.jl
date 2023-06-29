@@ -50,13 +50,13 @@ using Test
         lA = LeftSuperOp(A)
         rB = RightSuperOp(B)
 
-        @assert vector2operator(lA*vr) ≈ A*r
-        @assert vector2operator(rB*vr) ≈ r*B
+        @test vector2operator(lA*vr) ≈ A*r
+        @test vector2operator(rB*vr) ≈ r*B
 
-        @assert vector2operator(CommutatorSuperOp(A)*vr) ≈ A*r - r*A
-        @assert vector2operator(AntiCommutatorSuperOp(A)*vr) ≈ A*r + r*A
+        @test vector2operator(CommutatorSuperOp(A)*vr) ≈ A*r - r*A
+        @test vector2operator(AntiCommutatorSuperOp(A)*vr) ≈ A*r + r*A
 
-        @assert vector2operator(HamiltonianEvolutionSuperOp(B,1.0)*vr) ≈ exp(-1im*Hermitian(B))*r*adjoint(exp(-1im*Hermitian(B)))
+        @test vector2operator(HamiltonianEvolutionSuperOp(B,1.0)*vr) ≈ exp(-1im*Hermitian(B))*r*adjoint(exp(-1im*Hermitian(B)))
     end
 
     @testset "Math utilities" begin
