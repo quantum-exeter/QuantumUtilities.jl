@@ -1,0 +1,13 @@
+name = "QuantumUtilities"
+uuid = "e9b3fdb8-a101-46d4-b20f-e30ed3b10417"
+authors = ["Federico Cerisola <federico@cerisola.net"]
+version = "1.0.0-DEV"
+
+[compat]
+julia = "1.6"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
