@@ -39,4 +39,22 @@ using Test
         @test partial_trace(ABCD, [1,3,4], [2,3,5,4]) ≈ tensor(A,C,D)
         @test partial_trace(ABCD, [2,3,4], [2,3,5,4]) ≈ tensor(B,C,D)
     end
+
+    @testset "Liouville space" begin
+        A = rand(7,7) + 1im*rand(7,7)
+        B = rand(7,7) + 1im*rand(7,7)
+        r = rand(7,7) + 1im*rand(7,7)
+
+        vr = operator2vector(r)
+        lA = LeftSuperOp(A)
+        rB = RightSuperOp(B)
+
+        @assert vector2operator(lA*vr) ≈ A*r
+        @assert vector2operator(rB*vr) ≈ r*B
+
+        @assert vector2operator(CommutatorSuperOp(A)*vr) ≈ A*r - r*A
+        @assert vector2operator(AntiCommutatorSuperOp(A)*vr) ≈ A*r + r*A
+
+        @assert vector2operator(HamiltonianEvolutionSuperOp(B,1.0)*vr) ≈ exp(-1im*Hermitian(B))*r*adjoint(exp(-1im*Hermitian(B)))
+    end
 end
