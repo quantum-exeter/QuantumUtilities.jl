@@ -1,4 +1,5 @@
 using LinearAlgebra
+using QuadGK
 using QuantumUtilities
 using Test
 
@@ -56,5 +57,22 @@ using Test
         @assert vector2operator(AntiCommutatorSuperOp(A)*vr) ≈ A*r + r*A
 
         @assert vector2operator(HamiltonianEvolutionSuperOp(B,1.0)*vr) ≈ exp(-1im*Hermitian(B))*r*adjoint(exp(-1im*Hermitian(B)))
+    end
+
+    @testset "Math utilities" begin
+        @test usinc(0.5) ≈ 0.958851077208406
+        @test usinc(0.0) ≈ 1.0
+
+        @test realifclose(2 + 0im) ≈ 2
+        @test realifclose(1e-21 + 1e-21im) ≈ 1.0e-21
+        @test realifclose(1e-21 + 1e-21im; tol=1e-22) ≈ 1.0e-21 + 1.0e-21im
+
+        @test scrap(1.2e-21) ≈ 0.0
+        @test scrap(1.2e-21; tol=1e-22) ≈ 1.2e-21
+        @test scrap(1e-10 + 1e-21im) ≈ 1.0e-10 + 1.0e-21im
+        @test scrap(1e-10 + 1e-25im) ≈ 1.0e-10
+
+        g(x) = 1/(x^2 + 1)
+        @test cauchy_quadgk(g, -1, 1)[1] ≈ -1.1080229582878788e-15
     end
 end
