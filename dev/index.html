@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Home · QuantumUtilities.jl</title><script data-outdated-warner src="assets/warner.js"></script><link rel="canonical" href="https://quantum-exeter.github.io/QuantumUtilities.jl/"/><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.045/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.24/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="assets/documenter.js"></script><script src="siteinfo.js"></script><script src="../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href>QuantumUtilities.jl</a></span></div><form class="docs-search" action="search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li class="is-active"><a class="tocitem" href>Home</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Home</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Home</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/quantum-exeter/QuantumUtilities.jl/blob/main/docs/src/index.md#" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="QuantumUtilities"><a class="docs-heading-anchor" href="#QuantumUtilities">QuantumUtilities</a><a id="QuantumUtilities-1"></a><a class="docs-heading-anchor-permalink" href="#QuantumUtilities" title="Permalink"></a></h1><p>Documentation for <a href="https://github.com/quantum-exeter/QuantumUtilities.jl">QuantumUtilities</a>.</p><ul><li><a href="#QuantumUtilities.partial_trace-Tuple{AbstractVector, Any, Any}"><code>QuantumUtilities.partial_trace</code></a></li><li><a href="#QuantumUtilities.partial_trace-Tuple{AbstractMatrix, Any, Any}"><code>QuantumUtilities.partial_trace</code></a></li><li><a href="#QuantumUtilities.tensor"><code>QuantumUtilities.tensor</code></a></li></ul><article class="docstring"><header><a class="docstring-binding" id="QuantumUtilities.partial_trace-Tuple{AbstractMatrix, Any, Any}" href="#QuantumUtilities.partial_trace-Tuple{AbstractMatrix, Any, Any}"><code>QuantumUtilities.partial_trace</code></a> — <span class="docstring-category">Method</span></header><section><div><pre><code class="language-julia hljs">partial_trace(ρ::AbstractMatrix, keep, dims)</code></pre><p>Computes the partial trace of a density matrix <code>ρ</code> by tracing out the specified subsystems.</p><p><strong>Arguments</strong></p><ul><li><code>ρ::AbstractMatrix</code>: The input density matrix.</li><li><code>keep</code>: The indices of the subsystems to keep in the partial trace.</li><li><code>dims</code>: The dimensions of the subsystems.</li></ul><p><strong>Returns</strong></p><p>The partial trace of the input density matrix.</p><p><strong>Examples</strong></p><pre><code class="language-julia hljs">julia&gt; A = [1 2 3 4; 5 6 7 8; 9 10 11 12; 13 14 15 16]
+4×4 Matrix{Int64}:
+  1   2   3   4
+  5   6   7   8
+  9  10  11  12
+ 13  14  15  16
+
+julia&gt; partial_trace(A, [2], [2, 2])
+2×2 Matrix{Int64}:
+ 12  14
+ 20  22</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/quantum-exeter/QuantumUtilities.jl/blob/2ccad2b03478f4b66e57a59d8264c76f9759bf9a/src/composite_systems.jl#L93-L120">source</a></section></article><article class="docstring"><header><a class="docstring-binding" id="QuantumUtilities.partial_trace-Tuple{AbstractVector, Any, Any}" href="#QuantumUtilities.partial_trace-Tuple{AbstractVector, Any, Any}"><code>QuantumUtilities.partial_trace</code></a> — <span class="docstring-category">Method</span></header><section><div><pre><code class="language-julia hljs">partial_trace(v::AbstractVector, keep, dims)</code></pre><p>Computes the partial trace of a pure state <code>v</code>.</p><p><strong>Arguments</strong></p><ul><li><code>v::AbstractVector</code>: The input pure state.</li><li><code>keep</code>: The indices of the subsystems to keep in the partial trace.</li><li><code>dims</code>: The dimensions of the subsystems.</li></ul><p><strong>Returns</strong></p><p>The partial trace of the input state.</p><p><strong>Examples</strong></p><pre><code class="language-julia hljs">julia&gt; v = [1, 0]
+2-element Vector{Int64}:
+ 1
+ 0
+
+julia&gt; w = [1, 1]/sqrt(2)
+2-element Vector{Float64}:
+ 0.7071067811865475
+ 0.7071067811865475
+
+julia&gt; vw = tensor(v,w)
+4-element Vector{Float64}:
+ 0.7071067811865475
+ 0.7071067811865475
+ 0.0
+ 0.0
+
+julia&gt; partial_trace(vw, [2], [2, 2])
+2×2 Matrix{Float64}:
+ 0.5  0.5
+ 0.5  0.5</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/quantum-exeter/QuantumUtilities.jl/blob/2ccad2b03478f4b66e57a59d8264c76f9759bf9a/src/composite_systems.jl#L51-L88">source</a></section></article><article class="docstring"><header><a class="docstring-binding" id="QuantumUtilities.tensor" href="#QuantumUtilities.tensor"><code>QuantumUtilities.tensor</code></a> — <span class="docstring-category">Function</span></header><section><div><pre><code class="language-julia hljs">tensor(A, B...)</code></pre><p>Computes the tensor product of matrices or array-like objects <code>A</code> and <code>B</code>.</p><p><strong>Arguments</strong></p><ul><li><code>A</code>: The first matrix or array-like object.</li><li><code>B...</code>: Additional matrices or array-like objects to compute their tensor product with <code>A</code>.</li></ul><p><strong>Returns</strong></p><p>The tensor product of the input matrices or array-like objects.</p><p><strong>Examples</strong></p><pre><code class="language-julia hljs">julia&gt; A = [1 2; 3 4]
+2×2 Matrix{Int64}:
+ 1  2
+ 3  4
+
+julia&gt; B = [5 6; 7 8]
+2×2 Matrix{Int64}:
+ 5  6
+ 7  8
+
+julia&gt; C = [9 10; 11 12]
+2×2 Matrix{Int64}:
+ 9   10
+ 11  12
+
+julia&gt; tensor(A, B)
+4×4 Matrix{Int64}:
+  5   6  10  12
+  7   8  14  16
+ 15  18  20  24
+ 21  24  28  32
+
+julia&gt; tensor(A, B, C)
+8×8 Matrix{Int64}:
+  45   50   54   60   90  100  108  120
+  55   60   66   72  110  120  132  144
+  63   70   72   80  126  140  144  160
+  77   84   88   96  154  168  176  192
+ 135  150  162  180  180  200  216  240
+ 165  180  198  216  220  240  264  288
+ 189  210  216  240  252  280  288  320
+ 231  252  264  288  308  336  352  384</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/quantum-exeter/QuantumUtilities.jl/blob/2ccad2b03478f4b66e57a59d8264c76f9759bf9a/src/composite_systems.jl#L1-L48">source</a></section></article></article><nav class="docs-footer"><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.24 on <span class="colophon-date" title="Thursday 29 June 2023 16:28">Thursday 29 June 2023</span>. Using Julia version 1.9.1.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
