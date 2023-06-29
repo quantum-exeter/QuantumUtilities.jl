@@ -4,7 +4,7 @@ CurrentModule = QuantumUtilities
 
 # QuantumUtilities
 
-Documentation for [QuantumUtilities](https://github.com/cerisola/QuantumUtilities.jl).
+Documentation for [QuantumUtilities](https://github.com/quantum-exeter/QuantumUtilities.jl).
 
 ```@index
 ```
