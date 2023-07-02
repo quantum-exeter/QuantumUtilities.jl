@@ -118,10 +118,10 @@ A tuple `(I, E)` containing the approximated integral `I` and an estimated upper
 
 ## Examples
 ```julia
-julia> g(x) = 1 / (x^2 + 1)
+julia> g(x) = 1 / (x + 1)
 
-julia> cauchy_quadgk(g, -1, 1)
-(-1.1080229582878788e-15, 1.312923433975867e-16)
+julia> cauchy_quadgk(g, -1/2, 1/2)
+(-1.09861228866811, 1.9939216944209193e-11)
 ```
 """
 function cauchy_quadgk(g, a, b; kws...)

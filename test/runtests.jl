@@ -72,7 +72,7 @@ using Test
         @test scrap(1e-10 + 1e-21im) ≈ 1.0e-10 + 1.0e-21im
         @test scrap(1e-10 + 1e-25im) ≈ 1.0e-10
 
-        g(x) = 1/(x^2 + 1)
-        @test cauchy_quadgk(g, -1, 1)[1] ≈ -1.1080229582878788e-15
+        g(x) = 1/(x+1)
+        @test cauchy_quadgk(g, -1/2, 1/2)[1] ≈ -log(3)
     end
 end
