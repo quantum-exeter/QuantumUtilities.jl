@@ -136,13 +136,17 @@ function partial_trace(ρ::AbstractMatrix, keep, dims)
     D = reshape(C, (keepdim, tracedim, keepdim, tracedim))
 
     R = similar(D, (keepdim, keepdim))
-    for I in CartesianIndices(R)
-        t = zero(eltype(D))
-        @inbounds @simd for k in axes(D,2)
+    _partial_trace!(R, D)
+end
+
+function _partial_trace!(ρout, ρin)
+    for I in CartesianIndices(ρout)
+        t = zero(eltype(ρin))
+        @inbounds @simd for k in axes(ρin,2)
             K = CartesianIndex(I.I[1], k, I.I[2], k)
-            t += D[K]
+            t += ρin[K]
         end
-        R[I] = t
+        ρout[I] = t
     end
-    R
+    ρout
 end
