@@ -119,19 +119,19 @@ julia> partial_trace(A, [2], [2, 2])
 ```
 """
 function partial_trace(ρ::AbstractMatrix, keep, dims)
-    keep = sort(keep, rev=true) # sort the kept dimensions; the order of input keep is ignored; reverse is needed due to column-major ordering (see later)
+    keep_sorted = sort(keep, rev=true) # sort the kept dimensions; the order of input keep is ignored; reverse is needed due to column-major ordering (see later)
 
     numdims = length(dims)
-    keepdim = prod(dims[keep])
+    keepdim = prod([dims[k] for k in keep_sorted])
     tracedim = prod(dims) ÷ keepdim
 
-    dims = reverse(dims) # kron is column-major so we need to reverse the order of the dimensions
-    keep = numdims + 1 .- keep # invert the numbering of the kept dimensions (see above)
-    traceout = setdiff(1:numdims, keep) # the dimensions to be traced out
+    dims_rev = reverse(dims) # kron is column-major so we need to reverse the order of the dimensions
+    keep_inv = numdims + 1 .- keep_sorted # invert the numbering of the kept dimensions (see above)
+    traceout = setdiff(1:numdims, keep_inv) # the dimensions to be traced out
 
-    newdimorder = (keep..., traceout...) # permute the dimensions so that the traced out dimensions are at the end
+    newdimorder = ntuple(i -> i ≤ length(keep_inv) ? keep_inv[i] : traceout[i - length(keep_inv)], numdims) # = (keep..., traceout...); permute the dimensions so that the traced out dimensions are at the end
 
-    B = reshape(ρ, (dims..., dims...))
+    B = reshape(ρ, (dims_rev..., dims_rev...))
     C = PermutedDimsArray(B, (newdimorder..., (newdimorder .+ numdims)...))
     D = reshape(C, (keepdim, tracedim, keepdim, tracedim))
 
