@@ -119,31 +119,30 @@ julia> partial_trace(A, [2], [2, 2])
 ```
 """
 function partial_trace(ρ::AbstractMatrix, keep, dims)
-    factoredshape = repeat(reverse(dims), outer=2)
-    B = reshape(ρ, (factoredshape...))
+    keep = sort(keep, rev=true) # sort the kept dimensions; the order of input keep is ignored; reverse is needed due to column-major ordering (see later)
 
-    newdimorder = zeros(Int, 2*length(dims))
-    for (k, sortedkeep) in enumerate(sort(keep, rev=true))
-        newdimorder[k] = length(dims) + 1 - sortedkeep
-        newdimorder[k+length(dims)] =  newdimorder[k] + length(dims)
-    end
-    count = length(keep)
-    for k in setdiff(1:length(dims), keep)
-        count += 1
-        newdimorder[count] = length(dims) + 1 - k
-        newdimorder[count+length(dims)] = newdimorder[count] + length(dims)
-    end
-    C = PermutedDimsArray(B, newdimorder)
-
+    numdims = length(dims)
     keepdim = prod(dims[keep])
     tracedim = prod(dims) ÷ keepdim
+
+    dims = reverse(dims) # kron is column-major so we need to reverse the order of the dimensions
+    keep = numdims + 1 .- keep # invert the numbering of the kept dimensions (see above)
+    traceout = setdiff(1:numdims, keep) # the dimensions to be traced out
+
+    newdimorder = (keep..., traceout...) # permute the dimensions so that the traced out dimensions are at the end
+
+    B = reshape(ρ, (dims..., dims...))
+    C = PermutedDimsArray(B, (newdimorder..., (newdimorder .+ numdims)...))
     D = reshape(C, (keepdim, tracedim, keepdim, tracedim))
 
-    R = Matrix{eltype(ρ)}(undef, keepdim, keepdim)
-    for i in 1:keepdim
-        for j in 1:keepdim
-            @inbounds R[i,j] = sum([D[i,k,j,k] for k in 1:tracedim])
+    R = similar(D, (keepdim, keepdim))
+    for I in CartesianIndices(R)
+        t = zero(eltype(D))
+        @inbounds @simd for k in axes(D,2)
+            K = CartesianIndex(I.I[1], k, I.I[2], k)
+            t += D[K]
         end
+        R[I] = t
     end
-    return R
+    R
 end
