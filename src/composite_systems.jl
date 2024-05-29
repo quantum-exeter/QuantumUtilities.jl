@@ -129,10 +129,11 @@ function partial_trace(ρ::AbstractMatrix, keep, dims)
     keep_inv = numdims + 1 .- keep_sorted # invert the numbering of the kept dimensions (see above)
     traceout = setdiff(1:numdims, keep_inv) # the dimensions to be traced out
 
-    newdimorder = ntuple(i -> i ≤ length(keep_inv) ? keep_inv[i] : traceout[i - length(keep_inv)], numdims) # = (keep..., traceout...); permute the dimensions so that the traced out dimensions are at the end
+    newdimorder =  _stack_into_tuple(keep_inv, traceout, numdims) # permute the dimensions so that the traced out dimensions are at the end
+    dimperm = _double_dim_tuple(newdimorder)
 
     B = reshape(ρ, (dims_rev..., dims_rev...))
-    C = PermutedDimsArray(B, (newdimorder..., (newdimorder .+ numdims)...))
+    C = PermutedDimsArray(B, dimperm)
     D = reshape(C, (keepdim, tracedim, keepdim, tracedim))
 
     R = similar(D, (keepdim, keepdim))
@@ -150,3 +151,7 @@ function _partial_trace!(ρout, ρin)
     end
     ρout
 end
+
+@inline _stack_into_tuple(t1, t2, N::Int) = ntuple(i -> i ≤ length(t1) ? t1[i] : t2[i-length(t1)], N)
+
+@inline _double_dim_tuple(t::NTuple{N, T}) where {N, T} = ntuple(i -> i ≤ N ? t[i] : t[i-N] + N, 2N)
