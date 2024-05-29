@@ -119,6 +119,9 @@ julia> partial_trace(A, [2], [2, 2])
 ```
 """
 function partial_trace(ρ::AbstractMatrix, keep, dims)
+    axes(ρ, 1) == axes(ρ, 2) || throw(DimensionMismatch("input matrix must be square, but got $(size(ρ))"))
+    prod(dims) == size(ρ, 1) || throw(DimensionMismatch("input dimensions must match the size of the input matrix, but got $(dims) and $(size(ρ))"))
+
     keep_sorted = sort(keep, rev=true) # sort the kept dimensions; the order of input keep is ignored; reverse is needed due to column-major ordering (see later)
 
     numdims = length(dims)
