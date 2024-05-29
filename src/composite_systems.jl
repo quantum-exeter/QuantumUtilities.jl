@@ -49,14 +49,14 @@ julia> tensor(A, B, C)
 tensor = kron
 
 """
-    partial_trace(v::AbstractVector, keep, dims)
+    partial_trace(v::AbstractVector, keep, dims:Tuple{Vararg{Int}})
 
 Computes the partial trace of a pure state `v`.
 
 ## Arguments
 - `v::AbstractVector`: The input pure state.
 - `keep`: The indices of the subsystems to keep in the partial trace.
-- `dims`: The dimensions of the subsystems.
+- `dims:Tuple{Vararg{Int}}`: The dimensions of the subsystems.
 
 ## Returns
 The partial trace of the input state.
@@ -80,25 +80,25 @@ julia> vw = tensor(v,w)
  0.0
  0.0
 
-julia> partial_trace(vw, [2], [2, 2])
+julia> partial_trace(vw, [2], (2, 2))
 2×2 Matrix{Float64}:
  0.5  0.5
  0.5  0.5
 ```
 """
-function partial_trace(v::AbstractVector, keep, dims)
+function partial_trace(v::AbstractVector, keep, dims::Tuple{Vararg{Int}})
     return partial_trace(v*v', keep, dims)
 end
 
 """
-    partial_trace(ρ::AbstractMatrix, keep, dims)
+    partial_trace(ρ::AbstractMatrix, keep, dims:::Tuple{Vararg{Int}})
 
 Computes the partial trace of a density matrix `ρ` by tracing out the specified subsystems.
 
 ## Arguments
 - `ρ::AbstractMatrix`: The input density matrix.
 - `keep`: The indices of the subsystems to keep in the partial trace.
-- `dims`: The dimensions of the subsystems.
+- `dims:::Tuple{Vararg{Int}}`: The dimensions of the subsystems.
 
 ## Returns
 The partial trace of the input density matrix.
@@ -112,13 +112,13 @@ julia> A = [1 2 3 4; 5 6 7 8; 9 10 11 12; 13 14 15 16]
   9  10  11  12
  13  14  15  16
 
-julia> partial_trace(A, [2], [2, 2])
+julia> partial_trace(A, [2], (2, 2))
 2×2 Matrix{Int64}:
  12  14
  20  22
 ```
 """
-function partial_trace(ρ::AbstractMatrix, keep, dims)
+function partial_trace(ρ::AbstractMatrix, keep, dims::Tuple{Vararg{Int}})
     axes(ρ, 1) == axes(ρ, 2) || throw(DimensionMismatch("input matrix must be square, but got $(size(ρ))"))
     prod(dims) == size(ρ, 1) || throw(DimensionMismatch("input dimensions must match the size of the input matrix, but got $(dims) and $(size(ρ))"))
 
