@@ -39,6 +39,9 @@ using Test
         @test partial_trace(ABCD, 3, (2,3,5,4)) ≈ tensor(A,B,D)
         @test partial_trace(ABCD, 2, (2,3,5,4)) ≈ tensor(A,C,D)
         @test partial_trace(ABCD, 1, (2,3,5,4)) ≈ tensor(B,C,D)
+
+        @test partial_trace(ABCD, (3,4), (2,3,5,4)) ≈ partial_trace(ABCD, (4,3), (2,3,5,4))
+        @test partial_trace(ABCD, (2,4), (2,3,5,4)) ≈ partial_trace(ABCD, (4,2), (2,3,5,4))
     end
 
     @testset "Liouville space" begin
