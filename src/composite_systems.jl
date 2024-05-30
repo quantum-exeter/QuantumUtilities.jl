@@ -49,13 +49,13 @@ julia> tensor(A, B, C)
 tensor = kron
 
 """
-    partial_trace(v::AbstractVector, trace_indices, dims:Tuple{Vararg{Int}})
+    partial_trace(v::AbstractVector, trace_indices::Tuple{Vararg{Int}}, dims::Tuple{Vararg{Int}})
 
 Computes the partial trace of a pure state `v`.
 
 ## Arguments
 - `v::AbstractVector`: The input pure state.
-- `trace_indices`: The indices of the subsystems to trace over.
+- `trace_indices::Tuple{Vararg{Int}}`: The indices of the subsystems to trace over.
 - `dims:Tuple{Vararg{Int}}`: The dimensions of the subsystems.
 
 ## Returns
@@ -86,18 +86,18 @@ julia> partial_trace(vw, [2], (2, 2))
  0.5  0.5
 ```
 """
-function partial_trace(v::AbstractVector, trace_indices, dims::Tuple{Vararg{Int}})
+function partial_trace(v::AbstractVector, trace_indices::NTuple{M, Int}, dims::NTuple{N, Int}) where {M, N}
     return partial_trace(v*v', trace_indices, dims)
 end
 
 """
-    partial_trace(ρ::AbstractMatrix, trace_indices, dims:::Tuple{Vararg{Int}})
+    partial_trace(ρ::AbstractMatrix, trace_indices::Tuple{Vararg{Int}}, dims::Tuple{Vararg{Int}})
 
 Computes the partial trace of a density matrix `ρ` by tracing out the specified subsystems.
 
 ## Arguments
 - `ρ::AbstractMatrix`: The input density matrix.
-- `trace_indices`: The indices of the subsystems to trace over.
+- `trace_indices::Tuple{Vararg{Int}}`: The indices of the subsystems to trace over.
 - `dims:::Tuple{Vararg{Int}}`: The dimensions of the subsystems.
 
 ## Returns
@@ -118,41 +118,40 @@ julia> partial_trace(A, [1], (2, 2))
  20  22
 ```
 """
-function partial_trace(ρ::AbstractMatrix, trace_indices, dims::Tuple{Vararg{Int}})
+function partial_trace(ρ::AbstractMatrix, trace_indices::NTuple{M, Int}, dims::NTuple{N, Int}) where {M, N}
     axes(ρ, 1) == axes(ρ, 2) || throw(DimensionMismatch("input matrix must be square, but got $(size(ρ))"))
     prod(dims) == size(ρ, 1) || throw(DimensionMismatch("input dimensions must match the size of the input matrix, but got $(dims) and $(size(ρ))"))
 
-    numdims = length(dims)
-    tracedim = prod([dims[k] for k in trace_indices])
-    keepdim = prod(dims) ÷ tracedim
-
+    traceout_rev = N + 1 .- reverse(trace_indices)  # invert the numbering of the dimensions to be traced over (see below)
     dims_rev = reverse(dims) # kron is column-major so we need to reverse the order of the dimensions
-    traceout = numdims + 1 .- reverse(trace_indices)  # invert the numbering of the dimensions to be traced over (see above)
-    keep_inv = setdiff(1:numdims, traceout) # the dimensions to be kept
+    dims_out = ntuple(k -> k ∈ traceout_rev ? 1 : dims_rev[k], N)
 
-    newdimorder =  _stack_into_tuple(keep_inv, traceout, numdims) # permute the dimensions so that the traced out dimensions are at the end
-    dimperm = _double_dim_tuple(newdimorder)
+    totaldim = prod(dims)
+    tracedim = _prod_masked(dims_rev, traceout_rev)
+    keepdim = totaldim ÷ tracedim
 
     B = reshape(ρ, (dims_rev..., dims_rev...))
-    C = PermutedDimsArray(B, dimperm)
-    D = reshape(C, (keepdim, tracedim, keepdim, tracedim))
+    R = similar(ρ, (keepdim, keepdim))
+    S = reshape(R, (dims_out..., dims_out...))
 
-    R = similar(D, (keepdim, keepdim))
-    _partial_trace!(R, D)
+    traceout_axes = ntuple(k -> k ∈ traceout_rev ? axes(B, k) : Base.OneTo(1), N)
+    traceout_indices = CartesianIndices(traceout_axes)
+    _partial_trace!(S, B, traceout_indices)
+
+    R
 end
 
-function _partial_trace!(ρout, ρin)
-    for I in CartesianIndices(ρout)
-        t = zero(eltype(ρin))
-        @inbounds @simd for k in axes(ρin,2)
-            K = CartesianIndex(I.I[1], k, I.I[2], k)
-            t += ρin[K]
+function _partial_trace!(S, B, trace_indices)
+    for I in CartesianIndices(S)
+        t = zero(eltype(B))
+        @inbounds @simd for J in trace_indices
+            t += B[max(I, CartesianIndex((J.I..., J.I...)))]
         end
-        ρout[I] = t
+        S[I] = t
     end
-    ρout
+    S
 end
 
-@inline _stack_into_tuple(t1, t2, N::Int) = ntuple(i -> i ≤ length(t1) ? t1[i] : t2[i-length(t1)], N)
-
-@inline _double_dim_tuple(t::NTuple{N, T}) where {N, T} = ntuple(i -> i ≤ N ? t[i] : t[i-N] + N, 2N)
+@inline _prod_masked(t::NTuple{N, Int}, k::NTuple{M, Int}) where {N, M} = t[k[1]]*_prod_masked(t, k[2:end])
+@inline _prod_masked(t::NTuple{N, Int}, k::Tuple{Int}) where N = t[k[1]]
+@inline _prod_masked(t::NTuple{N, Int}, k::Tuple{}) where N = 1
