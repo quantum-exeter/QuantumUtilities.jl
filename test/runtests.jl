@@ -49,17 +49,17 @@ using Test
         B = rand(7,7) + 1im*rand(7,7)
         r = rand(7,7) + 1im*rand(7,7)
 
-        vr = operator2vector(r)
-        lA = LeftSuperOp(A)
-        rB = RightSuperOp(B)
+        vr = operator_to_vector(r)
+        lA = left_superop(A)
+        rB = right_superop(B)
 
-        @test vector2operator(lA*vr) ≈ A*r
-        @test vector2operator(rB*vr) ≈ r*B
+        @test vector_to_operator(lA*vr) ≈ A*r
+        @test vector_to_operator(rB*vr) ≈ r*B
 
-        @test vector2operator(CommutatorSuperOp(A)*vr) ≈ A*r - r*A
-        @test vector2operator(AntiCommutatorSuperOp(A)*vr) ≈ A*r + r*A
+        @test vector_to_operator(commutator_superop(A)*vr) ≈ A*r - r*A
+        @test vector_to_operator(anticommutator_superop(A)*vr) ≈ A*r + r*A
 
-        @test vector2operator(HamiltonianEvolutionSuperOp(B,1.0)*vr) ≈ exp(-1im*Hermitian(B))*r*adjoint(exp(-1im*Hermitian(B)))
+        @test vector_to_operator(hamiltonian_evolution_superop(B,1.0)*vr) ≈ exp(-1im*Hermitian(B))*r*adjoint(exp(-1im*Hermitian(B)))
     end
 
     @testset "Math utilities" begin

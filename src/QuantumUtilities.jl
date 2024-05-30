@@ -9,9 +9,9 @@ export tensor, partial_trace
 
 include("liouville_space.jl")
 
-export operator2vector, vector2operator,
-       LeftSuperOp, RightSuperOp,
-       CommutatorSuperOp, AntiCommutatorSuperOp, HamiltonianEvolutionSuperOp
+export operator_to_vector, vector_to_operator,
+       left_superop, right_superop,
+       commutator_superop, anticommutator_superop, hamiltonian_evolution_superop
 
 include("math.jl")
 
