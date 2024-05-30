@@ -120,6 +120,35 @@ right_superop(A) = right_superop(A, size(A)[1])
 right_superop(A, d::Int) = kron(transpose(A), Matrix(I,d,d))
 
 """
+    left_right_superop(A, B)
+
+Computes the Liouville space superoperator representation of the operation `A ⋅ B`.
+
+## Arguments
+- `A`: The left matrix.
+- `B`: The right matrix.
+
+## Returns
+The superoperator obtained by performing a Kronecker product between the transpose of `A` and `B`.
+
+## Examples
+```julia
+julia> A = [1 2; 3 4]
+2×2 Matrix{Int64}:
+ 1  2
+ 3  4
+
+julia> left_right_superop(A, A)
+4×4 Matrix{Int64}:
+ 1  2   3   6
+ 3  4   9  12
+ 2  4   4   8
+ 6  8  12  16
+```
+"""
+left_right_superop(A, B) = kron(transpose(B), A)
+
+"""
     commutator_superop(A)
 
 Computes the Liouville space superoperator representation of the commutator with a matrix `A`.
@@ -204,5 +233,5 @@ julia> hamiltonian_evolution_superop(H, 0.1)
 """
 function hamiltonian_evolution_superop(H, dt)
     U = cis(-Hermitian(H)*dt)
-    return left_superop(U)*right_superop(adjoint(U))
+    return left_right_superop(U, adjoint(U))
 end
