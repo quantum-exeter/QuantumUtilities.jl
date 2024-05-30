@@ -11,8 +11,8 @@ using Test
         w = w/norm(w)
         vw = tensor(v,w)
 
-        @test partial_trace(vw, (2,), (3,4)) ≈ v*v'
-        @test partial_trace(vw, (1,), (3,4)) ≈ w*w'
+        @test partial_trace(vw, 2, (3,4)) ≈ v*v'
+        @test partial_trace(vw, 1, (3,4)) ≈ w*w'
 
         A = rand(2,2)
         B = rand(3,3)
@@ -35,10 +35,10 @@ using Test
         @test partial_trace(ABCD, (1,4), (2,3,5,4)) ≈ tensor(B,C)
         @test partial_trace(ABCD, (1,2), (2,3,5,4)) ≈ tensor(C,D)
 
-        @test partial_trace(ABCD, (4,), (2,3,5,4)) ≈ tensor(A,B,C)
-        @test partial_trace(ABCD, (3,), (2,3,5,4)) ≈ tensor(A,B,D)
-        @test partial_trace(ABCD, (2,), (2,3,5,4)) ≈ tensor(A,C,D)
-        @test partial_trace(ABCD, (1,), (2,3,5,4)) ≈ tensor(B,C,D)
+        @test partial_trace(ABCD, 4, (2,3,5,4)) ≈ tensor(A,B,C)
+        @test partial_trace(ABCD, 3, (2,3,5,4)) ≈ tensor(A,B,D)
+        @test partial_trace(ABCD, 2, (2,3,5,4)) ≈ tensor(A,C,D)
+        @test partial_trace(ABCD, 1, (2,3,5,4)) ≈ tensor(B,C,D)
     end
 
     @testset "Liouville space" begin

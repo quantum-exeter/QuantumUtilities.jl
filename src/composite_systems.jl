@@ -49,13 +49,13 @@ julia> tensor(A, B, C)
 tensor = kron
 
 """
-    partial_trace(v::AbstractVector, trace_indices::Tuple{Vararg{Int}}, dims::Tuple{Vararg{Int}})
+    partial_trace(v::AbstractVector, trace_indices::Union{Int,Tuple{Vararg{Int}}}, dims::Tuple{Vararg{Int}})
 
 Computes the partial trace of a pure state `v`.
 
 ## Arguments
 - `v::AbstractVector`: The input pure state.
-- `trace_indices::Tuple{Vararg{Int}}`: The indices of the subsystems to trace over.
+- `trace_indices::Union{Int,Tuple{Vararg{Int}}}`: The indices of the subsystems to trace over (can be a single integer or a tuple of integers).
 - `dims:Tuple{Vararg{Int}}`: The dimensions of the subsystems.
 
 ## Returns
@@ -90,14 +90,16 @@ function partial_trace(v::AbstractVector, trace_indices::NTuple{M, Int}, dims::N
     return partial_trace(v*v', trace_indices, dims)
 end
 
+partial_trace(v::AbstractVector, trace_index::Int, dims::NTuple{N, Int}) where N = partial_trace(v, (trace_index,), dims)
+
 """
-    partial_trace(ρ::AbstractMatrix, trace_indices::Tuple{Vararg{Int}}, dims::Tuple{Vararg{Int}})
+    partial_trace(ρ::AbstractMatrix, trace_indices::Union{Int,Tuple{Vararg{Int}}}, dims::Tuple{Vararg{Int}})
 
 Computes the partial trace of a density matrix `ρ` by tracing out the specified subsystems.
 
 ## Arguments
 - `ρ::AbstractMatrix`: The input density matrix.
-- `trace_indices::Tuple{Vararg{Int}}`: The indices of the subsystems to trace over.
+- `trace_indices::Union{Int,Tuple{Vararg{Int}}}`: The indices of the subsystems to trace over (can be a single integer or a tuple of integers).
 - `dims:::Tuple{Vararg{Int}}`: The dimensions of the subsystems.
 
 ## Returns
@@ -140,6 +142,8 @@ function partial_trace(ρ::AbstractMatrix, trace_indices::NTuple{M, Int}, dims::
 
     R
 end
+
+partial_trace(ρ::AbstractMatrix, trace_index::Int, dims::NTuple{N, Int}) where N = partial_trace(ρ, (trace_index,), dims)
 
 function _partial_trace!(S, B, trace_indices)
     for I in CartesianIndices(S)
