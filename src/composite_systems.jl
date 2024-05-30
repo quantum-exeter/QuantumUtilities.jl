@@ -49,13 +49,13 @@ julia> tensor(A, B, C)
 tensor = kron
 
 """
-    partial_trace(v::AbstractVector, keep, dims:Tuple{Vararg{Int}})
+    partial_trace(v::AbstractVector, trace_indices, dims:Tuple{Vararg{Int}})
 
 Computes the partial trace of a pure state `v`.
 
 ## Arguments
 - `v::AbstractVector`: The input pure state.
-- `keep`: The indices of the subsystems to keep in the partial trace.
+- `trace_indices`: The indices of the subsystems to trace over.
 - `dims:Tuple{Vararg{Int}}`: The dimensions of the subsystems.
 
 ## Returns
@@ -86,18 +86,18 @@ julia> partial_trace(vw, [2], (2, 2))
  0.5  0.5
 ```
 """
-function partial_trace(v::AbstractVector, keep, dims::Tuple{Vararg{Int}})
-    return partial_trace(v*v', keep, dims)
+function partial_trace(v::AbstractVector, trace_indices, dims::Tuple{Vararg{Int}})
+    return partial_trace(v*v', trace_indices, dims)
 end
 
 """
-    partial_trace(ρ::AbstractMatrix, keep, dims:::Tuple{Vararg{Int}})
+    partial_trace(ρ::AbstractMatrix, trace_indices, dims:::Tuple{Vararg{Int}})
 
 Computes the partial trace of a density matrix `ρ` by tracing out the specified subsystems.
 
 ## Arguments
 - `ρ::AbstractMatrix`: The input density matrix.
-- `keep`: The indices of the subsystems to keep in the partial trace.
+- `trace_indices`: The indices of the subsystems to trace over.
 - `dims:::Tuple{Vararg{Int}}`: The dimensions of the subsystems.
 
 ## Returns
@@ -112,25 +112,23 @@ julia> A = [1 2 3 4; 5 6 7 8; 9 10 11 12; 13 14 15 16]
   9  10  11  12
  13  14  15  16
 
-julia> partial_trace(A, [2], (2, 2))
+julia> partial_trace(A, [1], (2, 2))
 2×2 Matrix{Int64}:
  12  14
  20  22
 ```
 """
-function partial_trace(ρ::AbstractMatrix, keep, dims::Tuple{Vararg{Int}})
+function partial_trace(ρ::AbstractMatrix, trace_indices, dims::Tuple{Vararg{Int}})
     axes(ρ, 1) == axes(ρ, 2) || throw(DimensionMismatch("input matrix must be square, but got $(size(ρ))"))
     prod(dims) == size(ρ, 1) || throw(DimensionMismatch("input dimensions must match the size of the input matrix, but got $(dims) and $(size(ρ))"))
 
-    keep_sorted = sort(keep, rev=true) # sort the kept dimensions; the order of input keep is ignored; reverse is needed due to column-major ordering (see later)
-
     numdims = length(dims)
-    keepdim = prod([dims[k] for k in keep_sorted])
-    tracedim = prod(dims) ÷ keepdim
+    tracedim = prod([dims[k] for k in trace_indices])
+    keepdim = prod(dims) ÷ tracedim
 
     dims_rev = reverse(dims) # kron is column-major so we need to reverse the order of the dimensions
-    keep_inv = numdims + 1 .- keep_sorted # invert the numbering of the kept dimensions (see above)
-    traceout = setdiff(1:numdims, keep_inv) # the dimensions to be traced out
+    traceout = numdims + 1 .- reverse(trace_indices)  # invert the numbering of the dimensions to be traced over (see above)
+    keep_inv = setdiff(1:numdims, traceout) # the dimensions to be kept
 
     newdimorder =  _stack_into_tuple(keep_inv, traceout, numdims) # permute the dimensions so that the traced out dimensions are at the end
     dimperm = _double_dim_tuple(newdimorder)
