@@ -125,7 +125,7 @@ function partial_trace(ρ::AbstractMatrix, trace_indices::NTuple{M, Int}, dims::
     prod(dims) == size(ρ, 1) || throw(DimensionMismatch("input dimensions must match the size of the input matrix, but got $(dims) and $(size(ρ))"))
     1 ≤ minimum(trace_indices) && maximum(trace_indices) ≤ N || throw(ArgumentError("The trace indices must be between one and the number of dimensions, but got $(trace_indices)."))
 
-    traceout_rev = N + 1 .- reverse(trace_indices)  # invert the numbering of the dimensions to be traced over (see below)
+    traceout_rev = N + 1 .- trace_indices # invert the numbering of the dimensions to be traced over (see below)
     dims_rev = reverse(dims) # kron is column-major so we need to reverse the order of the dimensions
     dims_out = ntuple(k -> k ∈ traceout_rev ? 1 : dims_rev[k], N)
 
