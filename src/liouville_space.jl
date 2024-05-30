@@ -27,7 +27,8 @@ julia> operator_to_vector(A)
 operator_to_vector(A) = vec(A)
 
 """
-    vector_to_operator(v, d=round(Int, sqrt(prod(size(v)))))
+    vector_to_operator(v)
+    vector_to_operator(v, d::Int)
 
 Reshapes a one-dimensional vector `v` into a matrix of size `d` by `d`.
 
@@ -53,10 +54,12 @@ julia> vector_to_operator(v)
  3  4
 ```
 """
-vector_to_operator(v, d=round(Int, sqrt(prod(size(v))))) = reshape(v, d, d)
+vector_to_operator(v) = vector_to_operator(v, round(Int, sqrt(length(v))))
+vector_to_operator(v, d::Int) = reshape(v, d, d)
 
 """
-    left_superop(A, d=size(A)[2])
+    left_superop(A)
+    left_superop(A, d::Int)
 
 Computes the Liouville space left superoperator representation of a matrix `A`.
 
@@ -82,10 +85,12 @@ julia> left_superop(A)
  0  0  3  4
 ```
 """
-left_superop(A, d=size(A)[2]) = kron(Matrix(I,d,d), A)
+left_superop(A) = left_superop(A, size(A)[2])
+left_superop(A, d::Int) = kron(Matrix(I,d,d), A)
 
 """
-    right_superop(A, d=size(A)[1])
+    right_superop(A)
+    right_superop(A, d::Int)
 
 Computes the Liouville space right superoperator representation of a matrix `A`.
 
@@ -111,7 +116,8 @@ julia> right_superop(A)
  0  2  0  4
 ```
 """
-right_superop(A, d=size(A)[1]) = kron(transpose(A), Matrix(I,d,d))
+right_superop(A) = right_superop(A, size(A)[1])
+right_superop(A, d::Int) = kron(transpose(A), Matrix(I,d,d))
 
 """
     commutator_superop(A)
