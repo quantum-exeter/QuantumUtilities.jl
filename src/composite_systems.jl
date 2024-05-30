@@ -141,7 +141,7 @@ function partial_trace(ρ::AbstractMatrix, trace_indices::NTuple{M, Int}, dims::
     traceout_indices = CartesianIndices(traceout_axes)
     _partial_trace!(S, B, traceout_indices)
 
-    R
+    return R
 end
 
 partial_trace(ρ::AbstractMatrix, trace_index::Int, dims::NTuple{N, Int}) where N = partial_trace(ρ, (trace_index,), dims)
@@ -154,7 +154,8 @@ function _partial_trace!(S, B, trace_indices)
         end
         S[I] = t
     end
-    S
+
+    return S
 end
 
 @inline _prod_masked(t::NTuple{N, Int}, k::NTuple{M, Int}) where {N, M} = t[k[1]]*_prod_masked(t, k[2:end])
