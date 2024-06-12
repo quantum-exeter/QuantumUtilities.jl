@@ -1,6 +1,6 @@
 name = "QuantumUtilities"
 uuid = "e9b3fdb8-a101-46d4-b20f-e30ed3b10417"
-authors = ["Federico Cerisola <federico@cerisola.net"]
+authors = ["Federico Cerisola <federico@cerisola.net>"]
 version = "1.0.0-DEV"
 
 [deps]
