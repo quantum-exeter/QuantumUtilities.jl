@@ -85,8 +85,8 @@ julia> left_superop(A)
  0  0  3  4
 ```
 """
-left_superop(A) = left_superop(A, size(A)[2])
-left_superop(A, d::Int) = kron(Matrix(I,d,d), A)
+left_superop(A) = left_superop(A, size(A,2))
+left_superop(A, d::Int) = kron(I(d), A)
 
 """
     right_superop(A)
@@ -116,8 +116,8 @@ julia> right_superop(A)
  0  2  0  4
 ```
 """
-right_superop(A) = right_superop(A, size(A)[1])
-right_superop(A, d::Int) = kron(transpose(A), Matrix(I,d,d))
+right_superop(A) = right_superop(A, size(A,1))
+right_superop(A, d::Int) = kron(transpose(A), I(d))
 
 """
     left_right_superop(A, B)
