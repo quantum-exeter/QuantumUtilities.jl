@@ -85,7 +85,7 @@ Create a coherent state `α` in the Fock basis of a quantum harmonic oscillator.
 
 The state is created by applying the displacement operator to the vacuum state:
 ```math
-\\left|\\alpha\\rangle = D(\\alpha)\\left|0\\rangle.
+\\left|\\alpha\\right\\rangle = D(\\alpha)\\left|0\\right\\rangle.
 ```
 
 # Arguments
@@ -110,7 +110,7 @@ Create a coherent state `α` in the Fock basis of a quantum harmonic oscillator.
 
 The state is created by using the analytical expression for the state coefficients:
 ```math
-\\left|\\alpha\\rangle = \\sum_{n=\\mathrm{noffset}}^{\\mathrm{ncutoff}} e^{-\\frac{|\\alpha|^2}{2}}\\frac{\\alpha^n}{\\sqrt{n!}}\\left|n\\rangle.
+\\left|\\alpha\\right\\rangle = \\sum_{n=\\mathrm{noffset}}^{\\mathrm{ncutoff}} e^{-\\frac{|\\alpha|^2}{2}}\\frac{\\alpha^n}{\\sqrt{n!}}\\left|n\\right\\rangle.
 ```
 Due to the truncation of the series, the state is not guaranteed to be normalized.
 
@@ -137,7 +137,7 @@ end
 
 Coefficient in the Fock basis for the coherent state `α` of a quantum harmonic oscillator:
 ```math
-\\langle n\\middle|\\alpha\\rangle = e^{-\\frac{|\\alpha|^2}{2}}\\frac{\\alpha^n}{\\sqrt{n!}}.
+\\left\\langle n\\middle|\\alpha\\right\\rangle = e^{-\\frac{|\\alpha|^2}{2}}\\frac{\\alpha^n}{\\sqrt{n!}}.
 ```
 
 # Arguments
@@ -185,7 +185,7 @@ Create the displacement operator for a quantum harmonic oscillator.
 The operator is constructed using the analytic expressions of its matrix
 elements in the Fock basis:
 ```math
-\\langle m \\middle| D(\\alpha) \\middle| n \\rangle = 
+\\left\\langle m \\middle| D(\\alpha) \\middle| n \\right\\rangle = 
 e^{-\\frac{|\\alpha|^2}{2}} \\sqrt{\\frac{n!}{m!}} \\alpha^{m-n} L_n^{(m-n)}(|\\alpha|^2),
 ```
 where ``L_n^{(m-n)}`` are the generalised Laguerre polynomial.
@@ -217,7 +217,7 @@ end
 
 Return the displacement operator matrix elements in the Fock basis for a quantum harmonic oscillator:
 ```math
-\\langle m \\middle| D(\\alpha) \\middle| n \\rangle = 
+\\left\\langle m \\middle| D(\\alpha) \\middle| n \\right\\rangle = 
 e^{-\\frac{|\\alpha|^2}{2}} \\sqrt{\\frac{n!}{m!}} \\alpha^{m-n} L_n^{(m-n)}(|\\alpha|^2),
 ```
 where `math L_n^{(m-n)}` are the generalised Laguerre polynomial.
