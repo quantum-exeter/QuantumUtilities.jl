@@ -81,7 +81,7 @@ end
 """
     coherent_state(α, ncutoff::Int, noffset::Int=0)
 
-Create a coherent state `α' in the Fock basis of a quantum harmonic oscillator.
+Create a coherent state `α` in the Fock basis of a quantum harmonic oscillator.
 
 The state is created by applying the displacement operator to the vacuum state:
 ```math
@@ -106,7 +106,7 @@ end
 """
     coherent_state_analytic(α, ncutoff::Int, noffset::Int=0)
 
-Create a coherent state `α' in the Fock basis of a quantum harmonic oscillator.
+Create a coherent state `α` in the Fock basis of a quantum harmonic oscillator.
 
 The state is created by using the analytical expression for the state coefficients:
 ```math
@@ -135,7 +135,7 @@ end
 """
     coherent_state_coefficient(α, n::Int)
 
-Coefficient in the Fock basis for the coherent state `α' of a quantum harmonic oscillator:
+Coefficient in the Fock basis for the coherent state `α` of a quantum harmonic oscillator:
 ```math
 \\langle n\\middle|\\alpha\\rangle = e^{-\\frac{|\\alpha|^2}{2}}\\frac{\\alpha^n}{\\sqrt{n!}}.
 ```
@@ -188,7 +188,7 @@ elements in the Fock basis:
 \\langle m \\middle| D(\\alpha) \\middle| n \\rangle = 
 e^{-\\frac{|\\alpha|^2}{2}} \\sqrt{\\frac{n!}{m!}} \\alpha^{m-n} L_n^{(m-n)}(|\\alpha|^2),
 ```
-where `math L_n^{(m-n)}` are the generalised Laguerre polynomial.
+where ``L_n^{(m-n)}`` are the generalised Laguerre polynomial.
 
 Due to the truncation of the matrix elements, the operator is not guaranteed to be unitary.
 
