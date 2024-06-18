@@ -1,6 +1,10 @@
 module QuantumUtilities
 
 using LinearAlgebra
+using BandedMatrices
+using SpecialFunctions
+using LogExpFunctions
+using ClassicalOrthogonalPolynomials
 using QuadGK
 
 include("composite_systems.jl")
@@ -16,5 +20,10 @@ export operator_to_vector, vector_to_operator,
 include("math.jl")
 
 export usinc, realifclose, scrap, cauchy_quadgk
+
+include("harmonic_oscillator.jl")
+
+export number_operator, position_operator, momentum_operator,
+       creation_operator, annihilation_operator, coherent_state, displacement_operator
 
 end

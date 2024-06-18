@@ -8,4 +8,6 @@ using Test
     include("test_liouville_space.jl")
 
     include("test_math_utils.jl")
+
+    include("test_harmonic_oscillator.jl")
 end
