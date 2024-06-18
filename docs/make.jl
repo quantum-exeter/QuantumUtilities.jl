@@ -5,7 +5,7 @@ DocMeta.setdocmeta!(QuantumUtilities, :DocTestSetup, :(using QuantumUtilities); 
 
 makedocs(;
     modules=[QuantumUtilities],
-    authors="Federico Cerisola <federico@cerisola.net",
+    authors="Federico Cerisola <federico@cerisola.net>",
     repo="https://github.com/quantum-exeter/QuantumUtilities.jl/blob/{commit}{path}#{line}",
     sitename="QuantumUtilities.jl",
     format=Documenter.HTML(;
