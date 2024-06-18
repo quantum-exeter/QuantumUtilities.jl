@@ -130,20 +130,6 @@ Computes the Liouville space superoperator representation of the operation `A �
 
 ## Returns
 The superoperator obtained by performing a Kronecker product between the transpose of `A` and `B`.
-
-## Examples
-```julia
-julia> A = [1 2; 3 4]
-2×2 Matrix{Int64}:
- 1  2
- 3  4
-
-julia> left_right_superop(A, A)
-4×4 Matrix{Int64}:
- 1  2   3   6
- 3  4   9  12
- 2  4   4   8
- 6  8  12  16
 ```
 """
 left_right_superop(A, B) = kron(transpose(B), A)
@@ -158,20 +144,6 @@ Computes the Liouville space superoperator representation of the commutator with
 
 ## Returns
 The commutator superoperator matrix obtained by subtracting the right superoperator of `A` from the left superoperator of `A`.
-
-## Examples
-```julia
-julia> A = [1 2; 3 4]
-2×2 Matrix{Int64}:
- 1  2
- 3  4
-
-julia> commutator_superop(A)
-4×4 Matrix{Int64}:
-  0   2  -3   0
-  3   3   0  -3
- -2   0  -3   2
-  0  -2   3   0
 ```
 """
 commutator_superop(A) = left_superop(A) - right_superop(A)
@@ -186,20 +158,6 @@ Computes the Liouville space superoperator representation of the anti-commutator
 
 ## Returns
 The anti-commutator superoperator matrix obtained by adding the right superoperator of `A` to the left superoperator of `A`.
-
-## Examples
-```julia
-julia> A = [1 2; 3 4]
-2×2 Matrix{Int64}:
- 1  2
- 3  4
-
-julia> anticommutator_superop(A)
-4×4 Matrix{Int64}:
- 2  2  3  0
- 3  5  0  3
- 2  0  5  2
- 0  2  3  8
 ```
 """
 anticommutator_superop(A) = left_superop(A) + right_superop(A)
@@ -215,20 +173,6 @@ Computes the superoperator corresponding to the Hamiltonian evolution of a syste
 
 ## Returns
 The superoperator matrix representing the Hamiltonian evolution over the specified time step.
-
-## Examples
-```julia
-julia> H = [1 1im; -1im -1]
-2×2 Matrix{Complex{Int64}}:
- 1+0im   0+1im
- 0-1im  -1+0im
-
-julia> hamiltonian_evolution_superop(H, 0.1)
-4×4 Matrix{ComplexF64}:
-   0.990066+0.0im           0.098672+0.00993351im    0.098672-0.00993351im    0.00993351+0.0im
-  -0.098672-0.00993351im    0.970199+0.197344im     -0.00993351+0.0im         0.098672+0.00993351im
-  -0.098672+0.00993351im   -0.00993351+0.0im         0.970199-0.197344im      0.098672-0.00993351im
-   0.00993351+0.0im        -0.098672-0.00993351im   -0.098672+0.00993351im    0.990066+0.0im
 ```
 """
 function hamiltonian_evolution_superop(H, dt)
