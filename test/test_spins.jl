@@ -1,7 +1,7 @@
 using QuantumUtilities
 using LinearAlgebra
 
-@testset "Spins" begin
+@testset "Spin operators" begin
     for S0 in [1//2, 1, 3//2, 2]
         Sz = sz_operator(S0)
         Sx = sx_operator(S0)
@@ -20,4 +20,18 @@ using LinearAlgebra
         @test (Sz*Sm - Sm*Sz) ≈ -Sm
         @test (Sp*Sm - Sm*Sp) ≈ 2*Sz
     end
+end
+
+@testset "Rotation operators" begin
+    n = normalize!(rand(3))
+    α = 2π*rand()
+
+    @test rotation_operator(SpinHalf, n, α) ≈ QuantumUtilities.rotation_operator_generic(SpinHalf, n, α)
+    @test rotation_operator(SpinOne, n, α) ≈ QuantumUtilities.rotation_operator_generic(SpinOne, n, α)
+
+    α = 2π*rand()
+    θ = π*rand()
+    ϕ = 2π*rand()
+    n = [sin(θ)*cos(ϕ), sin(θ)*sin(ϕ), cos(θ)]
+    @test rotation_operator(3//2, θ, ϕ, α) ≈ rotation_operator(3//2, n, α)
 end

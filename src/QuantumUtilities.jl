@@ -28,6 +28,7 @@ export number_operator, position_operator, momentum_operator,
 
 include("spins.jl")
 
-export SpinLength, sz_operator, sx_operator, sy_operator, sp_operator, sm_operator, s2_operator
+export SpinLength, SpinHalf, SpinOne, sz_operator, sx_operator, sy_operator,
+       sp_operator, sm_operator, s2_operator, rotation_operator
 
 end
