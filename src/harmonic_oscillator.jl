@@ -148,7 +148,7 @@ Coefficient in the Fock basis for the coherent state `α` of a quantum harmonic 
 -  The coherent state coefficient in the Fock basis.
 """
 function coherent_state_coefficient(α, n::Int)
-    exp(-0.5*α*α' + xlogy(n, α) - 0.5*logfactorial(n))
+    exp(-0.5*α*α' + xlogy(n, complex(α)) - 0.5*logfactorial(n))
 end
 
 """
@@ -232,7 +232,7 @@ where `math L_n^{(m-n)}` are the generalised Laguerre polynomial.
 """
 function displacement_operator_coefficient(α, m::Int, n::Int)
     if m ≥ n
-        return exp(-0.5*α*α' + 0.5*logfactorial(n) - 0.5*logfactorial(m) + xlogy(m-n, α))*laguerrel(n, m-n, real(α*α'))
+        return exp(-0.5*α*α' + 0.5*logfactorial(n) - 0.5*logfactorial(m) + xlogy(m-n, complex(α)))*laguerrel(n, m-n, real(α*α'))
     else
         return conj(displacement_operator_coefficient(-α, n, m))
     end
