@@ -1,7 +1,3 @@
-const SpinLength = Union{Int, Rational}
-const SpinHalf = 1//2
-const SpinOne = 1
-
 """
     sz_operator(S0::SpinLength)
 
@@ -14,7 +10,7 @@ Create the matrix representation of the `z` spin component operator in the stand
 - The matrix representation of the ``S_z`` operator.
 """
 function sz_operator(S0::SpinLength)
-    Diagonal([m for m in S0:-1:-S0])
+    Diagonal([m for m in spin_projections(S0; rev=true)])
 end
  
 """
@@ -28,8 +24,8 @@ Create the matrix representation of the `x` spin component operator in the stand
 # Returns
 - The matrix representation of the ``S_x`` operator.
 """
-function sx_operator(S0::SpinLength)
-    Hermitian(BandedMatrix(1 => [sqrt(S0*(S0+1)-m*(m+1))/2 for m in S0-1:-1:-S0]), :U)
+function sx_operator(S0::SpinLength{N,D}) where {N,D}
+    Hermitian(BandedMatrix(1 => [sqrt(N/D*(N/D+1)-m*(m+1))/2 for m in spin_projections(S0; rev=true)[2:end]]), :U)
 end
  
 """
@@ -43,8 +39,8 @@ Create the matrix representation of the `y` spin component operator in the stand
 # Returns
 - The matrix representation of the ``S_y`` operator.
 """
-function sy_operator(S0::SpinLength)
-    Hermitian(BandedMatrix(1 => [sqrt(S0*(S0+1)-m*(m+1))/2im for m in S0-1:-1:-S0]), :U)
+function sy_operator(S0::SpinLength{N,D}) where {N,D}
+    Hermitian(BandedMatrix(1 => [sqrt(N/D*(N/D+1)-m*(m+1))/2im for m in spin_projections(S0; rev=true)[2:end]]), :U)
 end
 
 """
@@ -58,8 +54,8 @@ Create the matrix representation of the raising spin ladder operator in the stan
 # Returns
 - The matrix representation of the ``S_+`` operator.
 """
-function sp_operator(S0::SpinLength)
-    BandedMatrix(1 => [sqrt(S0*(S0+1)-m*(m+1)) for m in S0-1:-1:-S0])
+function sp_operator(S0::SpinLength{N,D}) where {N,D}
+    BandedMatrix(1 => [sqrt(N/D*(N/D+1)-m*(m+1)) for m in spin_projections(S0; rev=true)[2:end]])
 end
 
 """
@@ -73,8 +69,8 @@ Create the matrix representation of the lowering spin ladder operator in the sta
 # Returns
 - The matrix representation of the ``S_-`` operator.
 """
-function sm_operator(S0::SpinLength)
-    BandedMatrix(-1 => [sqrt(S0*(S0+1)-m*(m-1)) for m in S0:-1:-S0+1])
+function sm_operator(S0::SpinLength{N,D}) where {N,D}
+    BandedMatrix(-1 => [sqrt(N/D*(N/D+1)-m*(m-1)) for m in spin_projections(S0; rev=true)[1:end-1]])
 end
 
 """
@@ -88,8 +84,8 @@ Create the matrix representation of the squared spin operator in the standard z 
 # Returns
 - The matrix representation of the ``S^2`` operator.
 """
-function s2_operator(S0::SpinLength)
-    Diagonal([S0*(S0+1) for m in S0:-1:-S0])
+function s2_operator(S0::SpinLength{N,D}) where {N,D}
+    Diagonal([N/D*(N/D+1) for m in spin_projections(S0)])
 end
 
 """

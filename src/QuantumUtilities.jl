@@ -26,9 +26,14 @@ include("harmonic_oscillator.jl")
 export number_operator, position_operator, momentum_operator,
        creation_operator, annihilation_operator, coherent_state, displacement_operator
 
+include("spinlength.jl")
+
+export SpinLength, SpinInteger, SpinHalfInteger, SpinHalf, SpinOne, SpinTwo,
+       spin_projections
+
 include("spins.jl")
 
-export SpinLength, SpinHalf, SpinOne, sz_operator, sx_operator, sy_operator,
-       sp_operator, sm_operator, s2_operator, rotation_operator
+export sz_operator, sx_operator, sy_operator, sp_operator, sm_operator,
+       s2_operator, rotation_operator
 
 end

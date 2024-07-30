@@ -1,8 +1,38 @@
 using QuantumUtilities
 using LinearAlgebra
 
+@testset "Spin length" begin
+    @test SpinLength(3, 2) == SpinLength(3//2)
+    @test SpinLength(3/2) == SpinLength(3//2)
+    @test SpinLength(3) == SpinLength(3//1)
+    @test SpinInteger(5) == SpinLength(5//1)
+    @test SpinHalfInteger(5) == SpinLength(5//2)
+    @test_throws ArgumentError SpinLength(3//4)
+    @test_throws ArgumentError SpinLength(1.2)
+
+    @test eltype(spin_projections(SpinHalf)) <: Rational
+    @test eltype(spin_projections(SpinOne)) <: Integer
+
+    @test length(spin_projections(SpinHalf)) == 2
+    @test length(spin_projections(SpinOne)) == 3
+    @test length(spin_projections(SpinLength(5//2))) == 6
+    @test length(spin_projections(SpinInteger(5))) == 11
+
+    sone_ms = spin_projections(SpinOne)
+    sone_ms_rev = spin_projections(SpinOne; rev=true)
+    @test sone_ms[1] == -1
+    @test sone_ms[end] == 1
+    @test sone_ms[1] == sone_ms_rev[end]
+
+    shalf_ms = spin_projections(SpinHalf)
+    shalf_ms_rev = spin_projections(SpinHalf; rev=true)
+    @test shalf_ms[1] == -1//2
+    @test shalf_ms[end] == 1//2
+    @test shalf_ms[1] == shalf_ms_rev[end]
+end
+
 @testset "Spin operators" begin
-    for S0 in [1//2, 1, 3//2, 2]
+    for S0 in [SpinLength(1//2), SpinLength(1), SpinLength(3//2), SpinLength(2)]
         Sz = sz_operator(S0)
         Sx = sx_operator(S0)
         Sy = sy_operator(S0)
@@ -33,5 +63,5 @@ end
     θ = π*rand()
     ϕ = 2π*rand()
     n = [sin(θ)*cos(ϕ), sin(θ)*sin(ϕ), cos(θ)]
-    @test rotation_operator(3//2, θ, ϕ, α) ≈ rotation_operator(3//2, n, α)
+    @test rotation_operator(SpinLength(3//2), θ, ϕ, α) ≈ rotation_operator(SpinLength(3//2), n, α)
 end
