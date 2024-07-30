@@ -11,6 +11,7 @@ using LinearAlgebra
     a = annihilation_operator(nc)
     ketα = coherent_state(α, nc)
     Dα = displacement_operator(α, nc)
+    Dmα = displacement_operator(-α, nc)
 
     @test (X*P - P*X)[1:nc,1:nc] ≈ 1im*I
     @test (X^2/2 + P^2/2)[1:nc,1:nc] ≈ N[1:nc,1:nc] + (1/2)*I
@@ -22,6 +23,7 @@ using LinearAlgebra
     @test (a*ketα)[1:nc] ≈ α*ketα[1:nc]
     @test Dα'*Dα ≈ I
     @test Dα*Dα' ≈ I
+    @test Dmα ≈ Dα'
 
     nc, no = 42, 2
     α = 1.8 + 3.9im
@@ -32,6 +34,7 @@ using LinearAlgebra
     a = annihilation_operator(nc, no)
     ketα = coherent_state(α, nc, no)
     Dα = displacement_operator(α, nc)
+    Dmα = displacement_operator(-α, nc)
 
     @test (X*P - P*X)[2:nc-no,2:nc-no] ≈ 1im*I
     @test (X^2/2 + P^2/2)[2:nc-no,2:nc-no] ≈ N[2:nc-no,2:nc-no] + (1/2)*I
@@ -43,6 +46,7 @@ using LinearAlgebra
     @test (a*ketα)[2:nc-no] ≈ α*ketα[2:nc-no] skip=true
     @test Dα'*Dα ≈ I
     @test Dα*Dα' ≈ I
+    @test Dmα ≈ Dα'
 
     @test coherent_state(0, 8) ≈ [1, 0, 0, 0, 0, 0, 0, 0, 0]
 end
