@@ -29,6 +29,9 @@ using LinearAlgebra
     @test shalf_ms[1] == -1//2
     @test shalf_ms[end] == 1//2
     @test shalf_ms[1] == shalf_ms_rev[end]
+
+    @test sum(length.(spin_projections.(add(SpinHalf, SpinHalf)))) == length(shalf_ms)*length(shalf_ms)
+    @test sum(length.(spin_projections.(add(SpinOne, SpinHalf)))) == length(sone_ms)*length(shalf_ms)
 end
 
 @testset "Spin operators" begin

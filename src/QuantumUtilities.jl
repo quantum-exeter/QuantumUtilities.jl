@@ -27,9 +27,10 @@ export number_operator, position_operator, momentum_operator,
        creation_operator, annihilation_operator, coherent_state, displacement_operator
 
 include("spinlength.jl")
+include("addition_angular_momentum.jl")
 
 export SpinLength, SpinInteger, SpinHalfInteger, SpinHalf, SpinOne, SpinTwo,
-       spin_projections
+       spin_projections, add
 
 include("spins.jl")
 
