@@ -19,4 +19,5 @@ using LinearAlgebra
     @test vector_to_operator(anticommutator_superop(A)*vr) ≈ A*r + r*A
 
     @test vector_to_operator(hamiltonian_evolution_superop(B,1.0)*vr) ≈ exp(-1im*Hermitian(B))*r*adjoint(exp(-1im*Hermitian(B)))
+    @test vector_to_operator(dissipator_superop(A,B)*vr) ≈ A*r*B' - 0.5*(B'*A*r + r*B'*A)
 end

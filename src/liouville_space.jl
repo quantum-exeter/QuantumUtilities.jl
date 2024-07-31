@@ -179,3 +179,26 @@ function hamiltonian_evolution_superop(H, dt)
     U = cis(-Hermitian(H)*dt)
     return left_right_superop(U, adjoint(U))
 end
+
+"""
+    dissipator_superop(L, M)
+    dissipator_superop(L)
+
+Computes the superoperator corresponding to the Lindblad dissipator
+```math
+D(\\cdot) = L \\cdot M^\\dagger - \\frac{1}{2} \\{M^\\dagger L, \\cdot\\}
+```
+If only `L` is provided, it is assumed that `M = L`.
+
+## Arguments
+- `L`: The jump operator.
+
+## Returns
+The superoperator matrix representing the Lindblad dissipator.
+```
+"""
+function dissipator_superop(L, M)
+    return left_right_superop(L, adjoint(M)) - anticommutator_superop(adjoint(M)*L)/2
+end
+
+dissipator_superop(L) = dissipator_superop(L, L)
