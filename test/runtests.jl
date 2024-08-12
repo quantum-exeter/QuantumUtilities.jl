@@ -12,4 +12,6 @@ using Test
     include("test_harmonic_oscillator.jl")
 
     include("test_spins.jl")
+
+    include("test_environment.jl")
 end

@@ -6,6 +6,7 @@ using SpecialFunctions
 using LogExpFunctions
 using ClassicalOrthogonalPolynomials
 using QuadGK
+using SpectralDensities
 
 include("composite_systems.jl")
 
@@ -39,5 +40,10 @@ include("spins.jl")
 
 export sz_operator, sx_operator, sy_operator, sp_operator, sm_operator,
        s2_operator, rotation_operator
+
+include("environment.jl")
+
+export EnvironmentType, BosonicType, FermionicType
+export Environment, BosonicEnvironment, FermionicEnvironment, occupation
 
 end
