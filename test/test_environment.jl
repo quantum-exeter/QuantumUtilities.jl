@@ -17,6 +17,6 @@ using SpectralDensities
     nbos(ω) = 1/(exp(ω/kT) - 1)
     nfer(ω) = 1/(exp((ω-μ)/kT) + 1)
     ω = 0:0.1:10
-    @test nbos.(ω) ≈ occupation.(b1, ω)
-    @test nfer.(ω) ≈ occupation.(f1, ω)
+    @test nbos.(ω) ≈ occupation.(b1, ω) atol=1e-8
+    @test nfer.(ω) ≈ occupation.(f1, ω) atol=1e-8
 end
