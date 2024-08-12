@@ -1,4 +1,3 @@
-using QuadGK
 using QuantumUtilities
 using Test
 
